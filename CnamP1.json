@@ -12,21 +12,21 @@
     	"ligne_1": "",
     	"ligne_2": "",
     	"code_postal": ""
-  		},
+  		}
     
   },
 
   "Le_malade": {
   	"patient": {
-    	"type_relation": "",  // ex : "assuré", "enfant", "conjoint", "ascendant"
-    	"relation_code": "", // ex : "01" pour premier enfant ou père
+    	"type_relation": "",
+    	"relation_code": ""
   	},
     "prenom": "",  	
   	"nom": "",
     "date_naissance": "",
     "telephone": "",
     "signature": ""
-  },
+  }
 
  }
 
