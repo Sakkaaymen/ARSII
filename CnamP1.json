@@ -1,0 +1,32 @@
+{
+  "document_type": "Bulletin de remboursement des frais de soins",
+  "metadata": {
+    "identifiant_unique": "",
+    "regime": ["CNSS", "CNRPS", "Convention bilatérale"]
+  },
+
+  "assure_social": {
+    "nom": "",
+    "prenom": "",
+    "adresse": {
+    	"ligne_1": "",
+    	"ligne_2": "",
+    	"code_postal": ""
+  		},
+    
+  },
+
+  "Le_malade": {
+  	"patient": {
+    	"type_relation": "",  // ex : "assuré", "enfant", "conjoint", "ascendant"
+    	"relation_code": "", // ex : "01" pour premier enfant ou père
+  	},
+    "prenom": "",  	
+  	"nom": "",
+    "date_naissance": "",
+    "telephone": "",
+    "signature": ""
+  },
+
+ }
+
