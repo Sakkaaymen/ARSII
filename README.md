@@ -1,3 +1,3 @@
 # ARSII
 
-![Project Diagram](./static/daig.png)
+![Project Diagram](./static/diag.png)
