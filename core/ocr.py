@@ -7,7 +7,10 @@ from config import get_openai_client, logger
 from core.schema import CNAM_FORM_SCHEMA
 from core.prompts import OCR_SYSTEM_PROMPT
 from utils.image import get_blank_form_b64, encode_file_to_b64
+from core.schema import CLAIM_EVAL_SCHEMA
+from core.prompts import EVAL_SYSTEM_PROMPT
 
+        
 class OcrProcessor:
     def __init__(self):
         self.client = get_openai_client()
@@ -50,3 +53,37 @@ class OcrProcessor:
         except Exception as e:
             logger.error(f"[{request_id}] JSON parse error: {e}")
             raise HTTPException(status_code=500, detail="Invalid OCR output.")
+        
+    async def evaluate_claim(self, extracted: dict) -> dict:
+        """Ask OpenAI to run through reimbursement questions with structured JSON output."""
+        # 1) JSON‑encode for the LLM
+        body = json.dumps(extracted, ensure_ascii=False)
+    
+        try:
+            resp = self.client.responses.create(
+                model="gpt-4o-2024-08-06",
+                input=[
+                    {"role": "system",  "content": EVAL_SYSTEM_PROMPT},
+                    {"role": "user",    "content": body}
+                ],
+                text={
+                    "format": {
+                        "type": "json_schema",
+                        "name": "claim_evaluation",
+                        "schema": CLAIM_EVAL_SCHEMA,
+                        "strict": True
+                    }
+                }
+            )
+        except Exception as e:
+            logger.error(f"Evaluation call failed: {e}")
+            raise HTTPException(status_code=500, detail="Evaluation service error.")
+    
+        try:
+            evaluation = json.loads(resp.output_text)
+        except Exception as e:
+            logger.error(f"Invalid evaluation JSON: {e}")
+            raise HTTPException(status_code=500, detail="Invalid evaluation output.")
+    
+        logger.info(f"Claim evaluation result: {evaluation}")
+        return evaluation
